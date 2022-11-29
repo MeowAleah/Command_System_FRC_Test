@@ -1,22 +1,24 @@
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Input;
 
 public class ArcadeDrive extends CommandBase {
     private final Drivetrain drivetrain;
-    private final Input input;
+    private final DoubleSupplier x;
+    private final DoubleSupplier r;
 
-    public ArcadeDrive(Drivetrain drivetrain, Input input){
+    public ArcadeDrive(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier r){
         this.drivetrain = drivetrain;
-        this.input = input;
+        this.x = x;
+        this.r = r;
         addRequirements(this.drivetrain);
-        addRequirements(this.input);
     }
 
     @Override
     public void execute(){
-        this.drivetrain.arcadeDrive(this.input.getY(),this.input.getX());
+        this.drivetrain.arcadeDrive(this.x.getAsDouble(),this.r.getAsDouble());
     }
 }
