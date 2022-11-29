@@ -22,6 +22,8 @@ public class Drivetrain extends SubsystemBase{
 
     private final DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors,rightMotors);
 
+    private double speed;
+
     public Drivetrain() {
         this.flMotor.setInverted(Constants.flMotorIsInverted);
         this.frMotor.setInverted(Constants.frMotorIsInverted);
@@ -35,10 +37,14 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public void arcadeDrive(double forward, double rotation){
-        this.differentialDrive.arcadeDrive(forward, rotation);
+        this.differentialDrive.arcadeDrive(forward * speed, rotation * speed);
     }
 
     public void stopMotors(){
         this.differentialDrive.stopMotor();
+    }
+
+    public void setSpeed(double speed){
+        this.speed = speed;
     }
 }

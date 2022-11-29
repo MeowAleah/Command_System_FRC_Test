@@ -6,10 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.SetSpeed;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,6 +23,11 @@ public class RobotContainer {
   private final Drivetrain m_Drivetrain = new Drivetrain();
 
   private final Joystick joystick = new Joystick(0);
+
+  private final JoystickButton speedButton = new JoystickButton(joystick, 1);
+
+  private final Command halfSpeed = new SetSpeed(m_Drivetrain, 0.5);
+  private final Command fullSpeed = new SetSpeed(m_Drivetrain, 1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -38,7 +44,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
+    speedButton.whenHeld(fullSpeed).whenInactive(halfSpeed);
   }
 
   /**
