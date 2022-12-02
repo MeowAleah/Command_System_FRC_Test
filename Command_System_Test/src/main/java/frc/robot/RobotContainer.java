@@ -26,7 +26,7 @@ public class RobotContainer {
 
   private final JoystickButton speedButton = new JoystickButton(joystick, 1);
 
-  private final Command halfSpeed = new SetSpeed(m_Drivetrain, 0.5);
+  private final Command halfSpeed = new SetSpeed(m_Drivetrain, 1);
   private final Command fullSpeed = new SetSpeed(m_Drivetrain, 1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -44,7 +44,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    speedButton.whenHeld(fullSpeed).whenInactive(halfSpeed);
+    speedButton.whenPressed(fullSpeed).whenReleased(halfSpeed);
   }
 
   /**
