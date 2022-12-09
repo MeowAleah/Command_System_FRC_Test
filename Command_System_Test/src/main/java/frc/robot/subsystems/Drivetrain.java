@@ -3,7 +3,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -16,19 +19,27 @@ public class Drivetrain extends SubsystemBase{
     private final CANSparkMax frMotor = new CANSparkMax(Constants.frMotorCANID, mType);
     private final CANSparkMax blMotor = new CANSparkMax(Constants.blMotorCANID, mType);
     private final CANSparkMax brMotor = new CANSparkMax(Constants.brMotorCANID, mType);
+    private static final SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
+    private static final int kCPR = 8192;
+    private RelativeEncoder m_alternateEncoder = flMotor.getAlternateEncoder(kAltEncType, kCPR);
+
+    
 
     private final MotorControllerGroup leftMotors = new MotorControllerGroup(flMotor, blMotor);
     private final MotorControllerGroup rightMotors = new MotorControllerGroup(frMotor, brMotor);
 
     private final DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors,rightMotors);
 
+  
+
     private double speed;
 
     public Drivetrain() {
         this.flMotor.setInverted(Constants.flMotorIsInverted);
         this.frMotor.setInverted(Constants.frMotorIsInverted);
-        this.blMotor.setInverted(Constants.blMotorIsInverted);
+        this.blMotor.setInverted(Constants.blMotorIsInverted);  
         this.brMotor.setInverted(Constants.brMotorIsInverted); 
+        
     }
 
 
@@ -38,6 +49,9 @@ public class Drivetrain extends SubsystemBase{
 
     public void arcadeDrive(double forward, double rotation){
         this.differentialDrive.arcadeDrive(forward * speed, rotation * speed);
+        SmartDashboard.putNumber("encoder get position", m_alternateEncoder.getPosition());
+        SmartDashboard.putNumber("encoder get counts/rev", m_alternateEncoder.getCountsPerRevolution());
+        
     }
 
     public void stopMotors(){
